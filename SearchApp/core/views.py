@@ -14,7 +14,7 @@ def home(request: WSGIRequest) -> render:
     data = None
 
     if "keywords" in request.GET:
-        content: str = get_content(request.GET.get("keywords"), request.GET.get("site"))
+        content: str = get_content(request.GET.get("keywords"), request.GET.get("site"), request.GET.get("pages"))
 
         soup: BeautifulSoup = BeautifulSoup(content, "html.parser")
 
@@ -79,8 +79,8 @@ def home(request: WSGIRequest) -> render:
     return render(request, "core/home.html", {"data": data})
 
 
-def get_content(keywords: str, site: str) -> str:
-    keywords = keywords.replace(" ", "=")
+def get_content(keywords: str, site: str, pages: str) -> str:
+    keywords = keywords.replace(" ", "+")
 
     USER_AGENT: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"
     LANGUAGE: str = "en-US,en;q=0.5"
@@ -93,10 +93,12 @@ def get_content(keywords: str, site: str) -> str:
     html_content: str = ""
     x: int = 1
 
+    pages: int = int(pages)
+
     if site == "Lancet":
         x = 0
 
-        while x < 5:
+        while x < pages:
             html_content += session.get(
                 f"https://www.thelancet.com/action/doSearch?text1={keywords}&field1=AllField&startPage={x}&pageSize=25"
             ).text
@@ -105,7 +107,7 @@ def get_content(keywords: str, site: str) -> str:
             x += 1
 
     elif site == "PubMed":
-        while x < 8:
+        while x <= pages:
             html_content += session.get(
                 f"https://pubmed.ncbi.nlm.nih.gov/?term={keywords}&page={x}"
             ).text
@@ -114,9 +116,10 @@ def get_content(keywords: str, site: str) -> str:
             x += 1
 
     elif site == "New England Journal of Medicine":
-        while x < 8:
+        new_keywords = keywords.replace("+", "%20")
+        while x <= pages:
             html_content += session.get(
-                f"https://www.nejm.org/search?q={keywords}&startPage={x}"
+                f"https://www.nejm.org/search?q={new_keywords}&startPage={x}"
             ).text
             html_content += " "
 
@@ -192,13 +195,23 @@ def scraping(soup: BeautifulSoup, site: str, **kwargs) -> List:
                 authors_final += el.get_text()
                 authors_final += ", "
 
-            data.append(
-                {
-                    "title": title.get_text(),
-                    "href": href,
-                    "authors": authors_final,
-                    "intro": intro.get_text(),
-                }
-            )
+            if intro is None:
+                data.append(
+                    {
+                        "title": title.get_text(),
+                        "href": href,
+                        "authors": authors_final,
+                    }
+                )
+
+            else:
+                data.append(
+                    {
+                        "title": title.get_text(),
+                        "href": href,
+                        "authors": authors_final,
+                        "intro": intro.get_text(),
+                    }
+                )
 
     return data

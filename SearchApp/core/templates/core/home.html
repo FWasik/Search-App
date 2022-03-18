@@ -49,7 +49,7 @@
             font-size: 1.6rem;
         }
 
-        main .btn:hover {
+        main .btn:hover, main .btn:focus {
             color: #000000;
             background-color: #FFFFFF;
             border-color: #000000;
@@ -66,7 +66,7 @@
         }
 
         section .container {
-            margin: 8vh 2vw;
+            margin: 6vh 2vw;
             display: block;
         }
 
@@ -74,138 +74,149 @@
             margin: 2vh 0;
         }
 
+        #pages {
+            width: 40%
+        }
+
     </style>
 </head>
 <body>
     <main>
         <h1>Search App</h1>
-        <h5>SearchApp delivers functionality to find science articles. Just type keywords below</h5>
+        <h5>SearchApp delivers functionality to find science articles. Just enter keywords and number of pages below</h5>
         <hr/>
         <form method="GET">
-          <div class="form-group column">
-              <div class="container">
-                <input type="text" class="form-control" value="{{request.GET.keywords}}"
-                   id="keywords" name="keywords" placeholder="Type keywords...">
+              <div class="form-group column">
+                  <div class="container">
+                    <input type="text" class="form-control" value="{{request.GET.keywords}}"
+                       id="keywords" name="keywords" placeholder="Enter keywords...">
+                  </div>
+
+                  <div class="container">
+                    <input type="text" class="form-control" value="{{request.GET.pages}}"
+                       id="pages" name="pages" placeholder="Enter number of pages you want to search on site...">
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                      {% if request.GET.site == 'PubMed' %}
+                          <input class="form-check-input" type="radio" name="site" id="radio1" value="PubMed" checked>
+                          <label class="form-check-label" for="radio1">
+                            PubMed
+                          </label>
+
+                      {% else %}
+                          <input class="form-check-input" type="radio" name="site" id="radio2" value="PubMed">
+                          <label class="form-check-label" for="radio2">
+                            PubMed
+                          </label>
+
+                      {% endif %}
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                      {% if request.GET.site == 'Lancet' %}
+                          <input class="form-check-input" type="radio" name="site" id="radio3" value="Lancet" checked>
+                          <label class="form-check-label" for="radio3">
+                            Lancet
+                          </label>
+
+                      {% else %}
+                          <input class="form-check-input" type="radio" name="site" id="radio4" value="Lancet">
+                          <label class="form-check-label" for="radio4">
+                            Lancet
+                          </label>
+                      {% endif %}
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                      {% if request.GET.site == 'New England Journal of Medicine' %}
+                          <input class="form-check-input" type="radio" name="site" id="radio5"
+                                 value="New England Journal of Medicine" checked>
+                          <label class="form-check-label" for="radio5">
+                            New England Journal of Medicine
+                          </label>
+
+                      {% else %}
+                          <input class="form-check-input" type="radio" name="site" id="radio6"
+                                 value="New England Journal of Medicine">
+                          <label class="form-check-label" for="radio6">
+                            New England Journal of Medicine
+                          </label>
+                      {% endif %}
+                  </div>
+
               </div>
 
-              <div class="form-check form-check-inline">
-                  {% if request.GET.site == 'PubMed' %}
-                      <input class="form-check-input" type="radio" name="site" id="radio1" value="PubMed" checked>
-                      <label class="form-check-label" for="radio1">
-                        PubMed
-                      </label>
-
-                  {% else %}
-                      <input class="form-check-input" type="radio" name="site" id="radio2" value="PubMed">
-                      <label class="form-check-label" for="radio2">
-                        PubMed
-                      </label>
-
-                  {% endif %}
-              </div>
-
-              <div class="form-check form-check-inline">
-                  {% if request.GET.site == 'Lancet' %}
-                      <input class="form-check-input" type="radio" name="site" id="radio3" value="Lancet" checked>
-                      <label class="form-check-label" for="radio3">
-                        Lancet
-                      </label>
-
-                  {% else %}
-                      <input class="form-check-input" type="radio" name="site" id="radio4" value="Lancet">
-                      <label class="form-check-label" for="radio4">
-                        Lancet
-                      </label>
-                  {% endif %}
-              </div>
-
-              <div class="form-check form-check-inline">
-                  {% if request.GET.site == 'New England Journal of Medicine' %}
-                      <input class="form-check-input" type="radio" name="site" id="radio5"
-                             value="New England Journal of Medicine" checked>
-                      <label class="form-check-label" for="radio5">
-                        New England Journal of Medicine
-                      </label>
-
-                  {% else %}
-                      <input class="form-check-input" type="radio" name="site" id="radio6"
-                             value="New England Journal of Medicine">
-                      <label class="form-check-label" for="radio6">
-                        New England Journal of Medicine
-                      </label>
-                  {% endif %}
-              </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Search</button>
+              <button type="submit" class="btn btn-primary">Search</button>
 
         </form>
 
         <hr/>
 
         <section>
-            {% if data %}
-                Results: {{ data|length }}
-                {% for item in data %}
-                    <div class="container">
-                        <h5> <a href="{{item.href}}"> {{ item.title }} </a> </h5>
-                        <a> {{ item.authors }}</a>
+                {% if data %}
+                    <h5>Results {{ data.start_index }} - {{ data.end_index }} of {{ data.paginator.count }}</h5>
 
-                        <p> {{ item.intro }}</p>
-                    </div>
-                {% endfor %}
+                    {% for item in data %}
+                        <div class="container">
+                            <h5> <a href="{{item.href}}"> {{ item.title }} </a> </h5>
+                            <a> {{ item.authors }}</a>
+
+                            <p> {{ item.intro }}</p>
+                        </div>
+                    {% endfor %}
 
 
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                      {% if data.has_previous %}
-                        <li class="page-item ">
-                          <a class="page-link"
-                             href="?page={{ data.previous_page_number }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}"
-                             tabindex="-1">&laquo;</a>
-                        </li>
-                        <li class="page-item ">
-                          <a class="page-link" href="?page=1&keywords={{request.GET.keywords}}&site={{request.GET.site}}" tabindex="-1">1</a>
-                        </li>
-                      {% endif %}
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                          {% if data.has_previous %}
+                            <li class="page-item ">
+                              <a class="page-link"
+                                 href="?page={{ data.previous_page_number }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}&pages={{request.GET.pages}}"
+                                 tabindex="-1">&laquo;</a>
+                            </li>
+                            <li class="page-item ">
+                              <a class="page-link" href="?page=1&keywords={{request.GET.keywords}}&site={{request.GET.site}}&pages={{request.GET.pages}}" tabindex="-1">1</a>
+                            </li>
+                          {% endif %}
 
-                      {% if data.number|sub:2 > 0 %}
+                          {% if data.number|sub:2 > 0 %}
+                            <li class="page-item disabled">
+                              <a class="page-link">...</a>
+                            </li>
+                          {% endif %}
+
                         <li class="page-item disabled">
-                          <a class="page-link">...</a>
+                            <a class="page-link" href="#">
+                                {{data.number}}
+                            </a>
                         </li>
-                      {% endif %}
 
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">
-                            {{data.number}}
-                        </a>
-                    </li>
+                          {% if data.has_next %}
+                                {% if data.number|add:1 < data.paginator.num_pages %}
+                                    <li class="page-item disabled">
+                                    <a class="page-link">...</a>
+                                    </li>
+                                {% endif %}
 
-                      {% if data.has_next %}
-                            {% if data.number|add:1 < data.paginator.num_pages %}
-                                <li class="page-item disabled">
-                                <a class="page-link">...</a>
-                                </li>
-                            {% endif %}
+                              <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ data.paginator.num_pages }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}&pages={{request.GET.pages}}">
+                                    {{data.paginator.num_pages}}
+                                </a>
+                              </li>
 
-                          <li class="page-item">
-                            <a class="page-link"
-                               href="?page={{ data.paginator.num_pages }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}">
-                                {{data.paginator.num_pages}}
-                            </a>
-                          </li>
+                              <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ data.next_page_number }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}&pages={{request.GET.pages}}">
+                                    &raquo;
+                                </a>
+                              </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
 
-                          <li class="page-item">
-                            <a class="page-link"
-                               href="?page={{ data.next_page_number }}&keywords={{request.GET.keywords}}&site={{request.GET.site}}">
-                                &raquo;
-                            </a>
-                          </li>
-                      {% endif %}
-                  </ul>
-                </nav>
-
-            {% endif %}
+                {% endif %}
         </section>
     </main>
 </body>
