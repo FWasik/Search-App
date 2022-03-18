@@ -11,6 +11,7 @@ django-mathfilters = "*"
 flake8 = "*"
 black = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
