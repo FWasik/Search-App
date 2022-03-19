@@ -46,27 +46,27 @@ pipenv install
 ```
 
 
-##Run
+## Run
 
-####Without Docker:
+#### Without Docker:
 ```
 py manage.py runserver
 ```
 
-####With Docker:
+#### With Docker:
 ```
 docker-compose build
 
 docker-compose up -d
 ```
 
-####Inspecting container:
+#### Inspecting container:
 ```
 docker-compose logs -f
 ```
 
 
-####Running production version:
+#### Running production version:
 ```
 docker-compose -f docker-compose.prod.yml up -d --build  
 ```
