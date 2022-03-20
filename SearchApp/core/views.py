@@ -14,16 +14,17 @@ def home(request: WSGIRequest) -> render:
     data = None
 
     if "keywords" in request.GET:
-        content: str = get_content(request.GET.get("keywords"), request.GET.get("site"), request.GET.get("pages"))
+        site: str = request.GET.get("site")
+        content: str = get_content(request.GET.get("keywords"), site, request.GET.get("pages"))
 
         soup: BeautifulSoup = BeautifulSoup(content, "html.parser")
 
         data = List
 
-        if request.GET.get("site") == "Lancet":
+        if site == "Lancet":
             data = scraping(
                 soup,
-                request.GET.get("site"),
+                site,
                 addr="https://www.thelancet.com",
                 article_el="div",
                 article_class="search__item__body",
@@ -35,10 +36,10 @@ def home(request: WSGIRequest) -> render:
                 intro_class="meta__details",
             )
 
-        elif request.GET.get("site") == "PubMed":
+        elif site == "PubMed":
             data = scraping(
                 soup,
-                request.GET.get("site"),
+                site,
                 addr="https://pubmed.ncbi.nlm.nih.gov/",
                 article_el="div",
                 article_class="docsum-content",
@@ -50,13 +51,13 @@ def home(request: WSGIRequest) -> render:
                 intro_class="full-view-snippet",
             )
 
-        elif request.GET.get("site") == "New England Journal of Medicine":
+        elif site == "New England Journal of Medicine":
             data = scraping(
                 soup,
-                request.GET.get("site"),
+                site,
                 addr="https://www.nejm.org",
                 article_el="div",
-                article_class="issue-item_cont clearfix",
+                article_class="issue-item_left",
                 title_el="h6",
                 title_class="issue-item_title",
                 authors_el="div",
