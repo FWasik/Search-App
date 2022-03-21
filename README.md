@@ -28,12 +28,9 @@ https://www.python.org/downloads/
 https://www.docker.com/
 
 Before installing requirements, create virtual environment.
-    
-Pipenv:  
-https://docs.python-guide.org/dev/virtualenvs/
 
-venv:   
-https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+Virtual environment configuration:  
+https://docs.python-guide.org/dev/virtualenvs/
 
 Requirements must be install. Install from requirements.txt:
 ```
