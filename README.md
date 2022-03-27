@@ -13,6 +13,10 @@ The application was deployed using the Heroku platform.
 You can use app here:   
 https://search-med-app.herokuapp.com/
 
+WARNING!    
+Sometimes (usually at the end of month) free dynos on Heroku platform are ran out what causes the page
+does not work. With new month, free dynos are restored.
+
 ## Technologies
 * Python: 3.9.2
 * Django: 4.0.3
