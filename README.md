@@ -17,9 +17,8 @@ https://search-med-app.herokuapp.com/
 * Python: 3.9.2
 * Django: 4.0.3
 * BeautifulSoup4: 4.10.0
-* Docker
+* Docker, docker-compose
 * Heroku platform
-* Cloudinary (for image storage)
 
 
 ## Setup
