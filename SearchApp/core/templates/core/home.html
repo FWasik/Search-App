@@ -98,7 +98,7 @@
                   </div>
 
                   <div class="form-check form-check-inline">
-                      {% if request.GET.site == 'PubMed' %}
+                      {% if request.GET.site == 'PubMed' or request.GET.site is None %}
                           <input class="form-check-input" type="radio" name="site" id="radio1" value="PubMed" checked>
                           <label class="form-check-label" for="radio1">
                             PubMed
@@ -109,7 +109,6 @@
                           <label class="form-check-label" for="radio2">
                             PubMed
                           </label>
-
                       {% endif %}
                   </div>
 
