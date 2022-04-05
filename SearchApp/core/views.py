@@ -5,21 +5,18 @@ from requests.sessions import Session
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from bs4.element import Tag
-from typing import List
 
 import itertools
 
 
 def home(request: WSGIRequest) -> render:
-    data = None
+    data = list()
 
     if "keywords" in request.GET:
         site: str = request.GET.get("site")
-        content: str = get_content(request.GET.get("keywords"), site, request.GET.get("pages"))
+        content: str = get_content(request.GET.get("keywords"), site, int(request.GET.get("pages")))
 
         soup: BeautifulSoup = BeautifulSoup(content, "html.parser")
-
-        data = List
 
         if site == "Lancet":
             data = scraping(
@@ -80,7 +77,7 @@ def home(request: WSGIRequest) -> render:
     return render(request, "core/home.html", {"data": data})
 
 
-def get_content(keywords: str, site: str, pages: str) -> str:
+def get_content(keywords: str, site: str, pages: int) -> str:
     keywords = keywords.replace(" ", "+")
 
     USER_AGENT: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"
@@ -93,8 +90,6 @@ def get_content(keywords: str, site: str, pages: str) -> str:
 
     html_content: str = ""
     x: int = 1
-
-    pages: int = int(pages)
 
     if site == "Lancet":
         x = 0
@@ -129,7 +124,7 @@ def get_content(keywords: str, site: str, pages: str) -> str:
     return html_content
 
 
-def scraping(soup: BeautifulSoup, site: str, **kwargs) -> List:
+def scraping(soup: BeautifulSoup, site: str, **kwargs) -> list:
     data = list()
     articles: list = soup.find_all(
         kwargs["article_el"], attrs={"class": kwargs["article_class"]}
