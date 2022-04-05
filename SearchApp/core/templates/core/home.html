@@ -83,18 +83,19 @@
 <body>
     <main>
         <h1>Search App</h1>
-        <h5>SearchApp delivers functionality to find science articles. Just enter keywords and number of pages below</h5>
+        <h5>SearchApp delivers functionality to find medical articles. Just enter keywords and number of pages below</h5>
         <hr/>
         <form method="GET">
               <div class="form-group column">
                   <div class="container">
                     <input type="text" class="form-control" value="{{request.GET.keywords}}"
-                       id="keywords" name="keywords" placeholder="Enter keywords...">
+                       id="keywords" name="keywords" placeholder="Enter keywords..." required>
                   </div>
 
                   <div class="container">
-                    <input type="text" class="form-control" value="{{request.GET.pages}}"
-                       id="pages" name="pages" placeholder="Enter number of pages you want to search on site...">
+                    <input type="number" class="form-control" value="{{request.GET.pages}}"
+                       id="pages" name="pages" placeholder="Enter number of pages you want to search on site..."
+                           min="1" required>
                   </div>
 
                   <div class="form-check form-check-inline">
