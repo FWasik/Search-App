@@ -30,3 +30,4 @@ jobs:
         file: ./SearchApp/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app
+        build-args: "SECRET_KEY=${{ secrets.SECRET_KEY }}"
