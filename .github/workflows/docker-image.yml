@@ -10,16 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./Dockerfile
-            context: SearchApp
-            image: ${{ secrets.DOCKER_HUB_USERNAME }}/SearchApp:latest
-
     steps:
-
     - name: Checkout source code
       uses: actions/checkout@v3
 
@@ -35,7 +26,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
-        context: "{{defaultContext}}:${{ matrix.context }}"
-        file: ${{ matrix.dockerfile }}
+        context: SearchApp
+        file: ./Dockerfile
         push: true
-        tags: ${{ matrix.image }}
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/SearchApp:latest
