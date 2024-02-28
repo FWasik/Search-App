@@ -10,12 +10,6 @@ The purpose of the application is to search for medical articles from sites such
 For this purpose web scraping was used. To create the website tools like Django, BeatifulSoup, docker-compose were used. 
 The application was deployed using the Heroku platform.
 
-You can use app here:   
-https://search-med-app.herokuapp.com/
-
-WARNING!    
-Sometimes (usually at the end of month) free dynos on Heroku platform are ran out what causes the page
-does not work. With new month, free dynos are restored.
 
 ## Technologies
 * Python: 3.9.2
