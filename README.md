@@ -16,7 +16,6 @@ The application was deployed using the Heroku platform.
 * Django: 4.0.3
 * BeautifulSoup4: 4.10.0
 * Docker, docker-compose
-* Heroku platform
 
 
 ## Setup
