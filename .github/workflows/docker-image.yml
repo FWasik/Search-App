@@ -24,32 +24,41 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Build and push
+    - name: Build dev and push
+      uses: docker/build-push-action@v3
+      with:
+        context: SearchApp
+        file: ./SearchApp/Dockerfile.dev
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app:dev
+        build-args: "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+
+    - name: Build prod and push
       uses: docker/build-push-action@v3
       with:
         context: SearchApp
         file: ./SearchApp/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app:prod
         build-args: "SECRET_KEY=${{ secrets.SECRET_KEY }}"
 
-  deploy:
-    runs-on: ubuntu-latest
+  # deploy:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout source code
-      uses: actions/checkout@v3
+  #   steps:
+  #   - name: Checkout source code
+  #     uses: actions/checkout@v3
 
-    - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+  #   - name: Generate deployment package
+  #     run: zip -r deploy.zip . -x '*.git*'
 
-    - name: Deploy to EBS
-      uses: einaregilsson/beanstalk-deploy@v21
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: search-app
-        environment_name: Search-app-env-2
-        version_label: "test #2"
-        region: eu-central-1
-        deployment_package: deploy.zip
+  #   - name: Deploy to EBS
+  #     uses: einaregilsson/beanstalk-deploy@v21
+  #     with:
+  #       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       application_name: search-app
+  #       environment_name: Search-app-env-2
+  #       version_label: "test #2"
+  #       region: eu-central-1
+  #       deployment_package: deploy.zip
