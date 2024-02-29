@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
                 "127.0.0.1",
                 "0.0.0.0",
                 "172.17.0.2",
-                "http://search-app.eu-central-1.elasticbeanstalk.com/",
+                "search-app.eu-central-1.elasticbeanstalk.com",
 ]
 
 
