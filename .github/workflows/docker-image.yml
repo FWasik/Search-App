@@ -51,5 +51,5 @@ jobs:
         application_name: search-app
         environment_name: Search-app-env-2
         version_label: "test #1"
-        region: eu-north-1
+        region: eu-central-1
         deployment_package: deploy.zip
