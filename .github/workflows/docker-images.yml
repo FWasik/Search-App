@@ -1,15 +1,14 @@
-name: Publish Docker image
+name: Publish Docker images
 
 on:
-  # release:
-  #   types: [published]
-  # push:
-  #   branches:
-  #     - 'main'
-  workflow_dispatch:
+  release:
+    types: [published]
+  push:
+    branches:
+      - 'main'
 
 jobs:
-  build:
+  build-and-push-images:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code
@@ -41,24 +40,3 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app:prod
         build-args: "SECRET_KEY=${{ secrets.SECRET_KEY }}"
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Checkout source code
-  #     uses: actions/checkout@v3
-
-  #   - name: Generate deployment package
-  #     run: zip -r deploy.zip . -x '*.git*'
-
-  #   - name: Deploy to EBS
-  #     uses: einaregilsson/beanstalk-deploy@v21
-  #     with:
-  #       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       application_name: search-app
-  #       environment_name: Search-app-env-2
-  #       version_label: "test #2"
-  #       region: eu-central-1
-  #       deployment_package: deploy.zip
