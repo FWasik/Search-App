@@ -43,7 +43,7 @@ jobs:
 
   deployment-to-aws-ebs:
     needs: [build-and-push-images]
-    if: always() && !cancelled() && needs.build-and-push-images.result == 'success'
+    if: ${{ !cancelled() && needs.build-and-push-images.result == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -60,6 +60,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: search-app
           environment_name: Search-app-env-2
-          version_label: "search-app v1.0.2"
+          version_label: "search-app v1.0.3"
           region: eu-central-1
           deployment_package: deploy.zip
