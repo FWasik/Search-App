@@ -1,4 +1,4 @@
-name: Publish Docker images
+name: Full CI/CD pipeline (publishing Docker images and deployment to AWS EBS)
 
 on:
   release:
@@ -40,3 +40,24 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/search-app:prod
         build-args: "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+
+  deployment-to-aws-ebs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Generate deployment package
+        run: zip deploy.zip ./docker-compose.yml
+
+      - name: Deploy to EBS
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: search-app
+          environment_name: Search-app-env-2
+          version_label: "search-app v1.0.1"
+          region: eu-central-1
+          deployment_package: deploy.zip
