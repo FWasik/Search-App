@@ -19,6 +19,8 @@ here: http://search-app.eu-central-1.elasticbeanstalk.com/
 * Django: 4.0.3
 * BeautifulSoup4: 4.10.0
 * Docker, docker-compose
+* GitHub Actions
+* AWS Elastic Beanstalk
 
 
 ## Setup
