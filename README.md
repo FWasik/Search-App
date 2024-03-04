@@ -4,11 +4,14 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [CI/CD with GitHub Actions and AWS Elastic Beanstalk](#cicd)
+
 
 ## General info
 The purpose of the application is to search for medical articles from sites such as PubMed, Lancet, and NEJM. 
 For this purpose web scraping was used. To create the website tools like Django, BeatifulSoup, docker-compose were used. 
-The application was deployed using the Heroku platform.
+CI/CD pipeline was set up with GitHub Actions and production environment on AWS Elastic Beanstalk. The app is deployed 
+here: http://search-app.eu-central-1.elasticbeanstalk.com/
 
 
 ## Technologies
@@ -19,49 +22,23 @@ The application was deployed using the Heroku platform.
 
 
 ## Setup
-Sites which are helpful before installation of requirements:    
-https://www.python.org/downloads/  
-https://www.docker.com/
-
-Before installing requirements, create virtual environment.
-
-Virtual environment configuration:  
-https://docs.python-guide.org/dev/virtualenvs/
-
-Requirements must be install. Install from requirements.txt:
+To run an app on your computer you can pull docker image from my DockerHub account with this command:
 ```
-pip install -r requirements.txt 
+docker pull dilreni2137/search-app:dev
 ```
 
-Install from Pipfile (with pipenv):
+Then you must run container:
 ```
-pipenv install
-```
-
-
-## Run
-
-#### Without Docker:
-```
-py manage.py runserver
+docker run -p 8000:8000 -t dilreni2137/search-app:dev
 ```
 
-#### With Docker:
-```
-docker-compose build
-
-docker-compose up -d
-```
-
-#### Inspecting container:
-```
-docker-compose logs -f
-```
+Now an app should be running at http://127.0.0.1:8000/ and http://localhost:8000/ 
 
 
-#### Running production version:
-```
-docker-compose -f docker-compose.prod.yml up -d --build  
-```
+## CI/CD with GitHub Actions and AWS Elastic Beanstalk
+Due to creation of a full CI/CD pipeline (except testing stage - no tests in this project), GitHub Actions and AWS EBS 
+were used. Each push to main branch triggers a workflow which builds two types of images: development and production. 
+Then, both of them are push to DockerHub. After that, production job starts. It pulls a production 
+image from DockerHub, zips it and sends to AWS EBS service. Eventually, EBS deploys it in a given environment.
 
 
