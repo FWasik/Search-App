@@ -4,7 +4,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [CI/CD with GitHub Actions and AWS Elastic Beanstalk](#cicd)
+* [CI/CD with GitHub Actions and AWS Elastic Beanstalk](#cicd-with-github-actions-and-aws-elastic-beanstalk)
 
 
 ## General info
